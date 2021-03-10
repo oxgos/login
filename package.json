@@ -1,0 +1,23 @@
+{
+  "name": "koa-learn",
+  "version": "1.0.0",
+  "description": "koa service",
+  "main": "app.js",
+  "scripts": {
+    "initDB": "node ./init-sql/index.js",
+    "start": "nodemon ./service/app.js"
+  },
+  "keywords": [
+    "koa"
+  ],
+  "author": "Gavin_Guo",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
