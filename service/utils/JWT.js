@@ -13,7 +13,7 @@ class JWT {
 
     let payload = {
       data,
-      exp: expireTime
+      exp: (+new Date()) + expireTime
     }
     // 生成payload的base64字符串
     payload = Buffer.from(JSON.stringify(payload)).toString('base64')
@@ -25,6 +25,8 @@ class JWT {
   }
   // 验证token
   static vertify(token, { alg = 'HS256' } = {}) {
+    if (!token) return
+    
     const jwtArr = token.split('.')
     const signature = jwtArr[2]
     const compare = this.getSignature(`${jwtArr[0]}.${jwtArr[1]}`, alg)
