@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "initDB": "node ./init-sql/index.js",
-    "start": "nodemon ./service/app.js",
+    "serve": "nodemon ./service/app.js",
     "test": "jest ./tests/jwt.test.js"
   },
   "keywords": [
@@ -16,6 +16,7 @@
   "dependencies": {
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
+    "koa-router": "^10.0.0",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

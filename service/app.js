@@ -1,11 +1,16 @@
 const Koa = require('koa')
-const app = new Koa()
+const koaBody = require('koa-body')
+const router = require('./routers/index')
 
 const PORT = 3000
 
-app.use(async ctx => {
-  ctx.body = 'Hello World'
-})
+const app = new Koa()
+
+
+app.use(koaBody())
+app
+  .use(router.routes())
+  .use(router.allowedMethods())
 
 app.listen(PORT, () => {
   console.log(`服务运行在localost:${PORT}`)
