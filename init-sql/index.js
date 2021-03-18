@@ -1,8 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const { walkDoc } = require('./util/walk-doc')
-const { query } = require('./util/connection')
-
+const { walkDoc } = require('./walk-doc')
+const query = require('../utils/connection')
 
 const execSql = async () => {
   const MINE = 'sql'
