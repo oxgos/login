@@ -28,12 +28,12 @@ test('测试生成token方法(不带参数)', () => {
 
 test('测试验证token的方法', () => {
   const bool = JWT.vertify(egToken, { alg })
-  expect(bool).toBe(true)
+  expect(bool).toBeTruthy()
 })
 
 test('测试验证token的方法(不带options)', () => {
   const bool = JWT.vertify(egToken)
-  expect(bool).toBe(true)
+  expect(bool).toBeTruthy()
 })
 
 test('测试解析payload的方法', () => {
