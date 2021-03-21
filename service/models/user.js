@@ -5,6 +5,10 @@ const insertData = function(table, values) {
   return query(_sql, [table, values])
 }
 
+const signUp = function(values) {
+  return insertData('user_t', values)
+}
+
 const findDataByAccount = function(account) {
   let _sql = 'select * from user_t where account = ?'
   return query(_sql, [account])
@@ -12,6 +16,7 @@ const findDataByAccount = function(account) {
 
 module.exports = {
   query,
+  signUp,
   insertData,
   findDataByAccount
 }

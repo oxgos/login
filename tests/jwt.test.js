@@ -1,4 +1,3 @@
-const { vertify } = require('../service/utils/JWT')
 const JWT = require('../service/utils/JWT')
 let egToken = '',
   alg = 'HS256',
