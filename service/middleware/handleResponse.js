@@ -18,9 +18,12 @@ const failResponse = (e) => {
 
 const handleResponse = (ctx) => {
   const result = ctx.__result__
-  ctx.body = result instanceof Error
-    ? failResponse(result)
-    : successResponse(result)
+  if (result instanceof Error) {
+    ctx.status = 400
+    ctx.body = failResponse(result)
+  } else {
+    ctx.body = successResponse(result)
+  }
 }
 
 module.exports = handleResponse
