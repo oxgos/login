@@ -1,17 +1,10 @@
 const JWT = require('../service/utils/JWT')
-let egToken = '',
-  alg = 'HS256',
+let alg = 'HS256',
   data = {
     userId: '123456',
     userName: 'Gavin_Guo'
   },
   expireTime = 7 * 24 * 60 * 60
-
-beforeAll(() => {
-  // 生成测试token
-  egToken = JWT.generate({ alg, data, expireTime })
-  console.log('egToken: ' + egToken)
-})
 
 test('测试生成token方法', () => {
   const token = JWT.generate({ alg, data, expireTime })
@@ -25,22 +18,31 @@ test('测试生成token方法(不带参数)', () => {
   expect(token.split('.').length).toBe(3)
 })
 
-test('测试验证token的方法', () => {
-  const bool = JWT.vertify(egToken, { alg })
-  expect(bool).toBeTruthy()
-})
+describe('Scoped / Nested block', () => {
+  let egToken = ''
 
-test('测试验证token的方法(不带options)', () => {
-  const bool = JWT.vertify(egToken)
-  expect(bool).toBeTruthy()
-})
+  beforeAll(() => {
+    egToken = JWT.generate({ alg, data, expireTime })
+    console.log('egToken: ' + egToken)
+  })
 
-test('测试解析payload的方法', () => {
-  const payload = JWT.decodePayload(egToken)
-  expect(payload.data).toEqual(data)
-})
-
-test('测试解析payload的方法(不带参数)', () => {
-  const payload = JWT.decodePayload()
-  expect(payload).toBeUndefined()
+  test('测试验证token的方法', () => {
+    const bool = JWT.vertify(egToken, { alg })
+    expect(bool).toBeTruthy()
+  })
+  
+  test('测试验证token的方法(不带options)', () => {
+    const bool = JWT.vertify(egToken)
+    expect(bool).toBeTruthy()
+  })
+  
+  test('测试解析payload的方法', () => {
+    const payload = JWT.decodePayload(egToken)
+    expect(payload.data).toEqual(data)
+  })
+  
+  test('测试解析payload的方法(不带参数)', () => {
+    const payload = JWT.decodePayload()
+    expect(payload).toBeUndefined()
+  })
 })
