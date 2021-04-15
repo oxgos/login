@@ -1,5 +1,5 @@
 {
-  "name": "koa-learn",
+  "name": "login-server",
   "version": "1.0.0",
   "description": "koa service",
   "main": "app.js",
