@@ -13,7 +13,9 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "vuex": "^3.6.2",
+    "vuex-class": "^0.3.2"
   },
   "devDependencies": {
     "@types/jsrsasign": "^8.0.10",

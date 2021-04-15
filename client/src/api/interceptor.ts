@@ -1,13 +1,21 @@
 import axios from 'axios'
+import store from '@/store'
+
+const whiteList: Array<string> = [
+  '/user/getPublicKey',
+  '/user/signUp',
+  '/user/signUp'
+]
+
 const service = axios.create({
   timeout: 20000
 })
-const __AUTH_TOKEN__ = ''
-// Alter defaults after instance has been created
-service.defaults.headers.common['gc-authorization'] = __AUTH_TOKEN__
 
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
+  if (config.url && !whiteList.includes(config.url)) {
+    config.headers.common['Authorization'] = `Bearer ${store.getters.token}`
+  }
   // 在发送请求之前做些什么
   return config;
 }, function (error) {

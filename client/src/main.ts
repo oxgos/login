@@ -1,5 +1,9 @@
+// Make sure to register before importing any components
+import './utils/classComponentHooks'
+
 import Vue from 'vue'
 import App from './App.vue'
+import store from './store'
 import router from './router'
 
 import UserDao from '@/api/user'
@@ -10,7 +14,7 @@ router.beforeEach((to, from, next) => {
     const userDao = new UserDao()
     userDao.getPublicKey()
       .then((res: any) => {
-        (window as any).__publickKey__ = res.data
+        (window as any).__publickKey__ = res
         next()
       })
       .catch(e => {
@@ -32,5 +36,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

@@ -1,5 +1,6 @@
 import axios from '@/api/interceptor'
 
+// 请求成功code=1
 const RES_OK = 1
 
 class UserDao {
@@ -9,10 +10,11 @@ class UserDao {
       const url = `/user/getPublicKey`
       axios.get(url)
         .then((res: any) => {
-          if (res.data.code === RES_OK) {
-            resolve(res.data)
+          const result = res.data
+          if (result.code === RES_OK) {
+            resolve(result.data)
           } else {
-            reject(res.data)
+            reject(result)
           }
         })
         .catch((e: any) => {
@@ -26,10 +28,11 @@ class UserDao {
       const url = `/user/signUp`
       axios.post(url, { account, userName, password })
         .then((res: any) => {
-          if (res.data.code === RES_OK) {
-            resolve(res.data)
+          const result = res.data
+          if (result.code === RES_OK) {
+            resolve(result.data)
           } else {
-            reject(res.data)
+            reject(result)
           }
         })
         .catch((e: any) => {
@@ -43,10 +46,11 @@ class UserDao {
       const url = `/user/signIn`
       axios.post(url, { account, password })
         .then((res: any) => {
-          if (res.data.code === RES_OK) {
-            resolve(res.data)
+          const result = res.data
+          if (result.code === RES_OK) {
+            resolve(result.data)
           } else {
-            reject(res.data)
+            reject(result)
           }
         })
         .catch((e: any) => {
