@@ -25,9 +25,12 @@ class JWT {
   }
   // 验证token
   static vertify(token, { alg = 'HS256' } = {}) {
-    if (!token) return
+    if (!token) return false
     
     const jwtArr = token.split('.')
+    // 校验是否分成3份
+    if (jwtArr.length !== 3) return false
+
     const signature = jwtArr[2]
     const compare = this.getSignature(`${jwtArr[0]}.${jwtArr[1]}`, alg)
     return signature === compare
