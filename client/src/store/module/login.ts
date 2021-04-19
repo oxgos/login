@@ -15,7 +15,7 @@ const state: loginState = {
 }
 
 const mutations: MutationTree<loginState> = {
-  SET_TOKEN(state, payload) {
+  SET_TOKEN(state: loginState, payload: any) {
     state.token = payload
   }
 }

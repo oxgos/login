@@ -39,6 +39,7 @@ export default class SignIn extends Vue {
     try {
       await this.signIn({ account: this.account, password: this.password })
       console.log('登陆成功')
+      this['$router'].push({ name: 'TestJwt' })
     } catch (e) {
       console.log('登陆失败' + e)
     }

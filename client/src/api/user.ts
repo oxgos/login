@@ -1,17 +1,14 @@
-import axios from '@/api/interceptor'
+import BaseDao from '@/api/base'
 
-// 请求成功code=1
-const RES_OK = 1
-
-class UserDao {
+class UserDao extends BaseDao{
   // 获取公钥
-  getPublicKey() {
+  getPublicKey(): Promise<any> {
     return new Promise((resolve, reject) => {
       const url = `/user/getPublicKey`
-      axios.get(url)
+      this.axios.get(url)
         .then((res: any) => {
           const result = res.data
-          if (result.code === RES_OK) {
+          if (result.code === BaseDao.RES_OK) {
             resolve(result.data)
           } else {
             reject(result)
@@ -23,13 +20,13 @@ class UserDao {
     })
   }
   // 注册
-  signup(account: string, userName: string, password: string) {
+  signup(account: string, userName: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const url = `/user/signUp`
-      axios.post(url, { account, userName, password })
+      this.axios.post(url, { account, userName, password })
         .then((res: any) => {
           const result = res.data
-          if (result.code === RES_OK) {
+          if (result.code === BaseDao.RES_OK) {
             resolve(result.data)
           } else {
             reject(result)
@@ -41,13 +38,13 @@ class UserDao {
     })
   }
   // 登陆
-  signin(account: string, password: string) {
+  signin(account: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const url = `/user/signIn`
-      axios.post(url, { account, password })
+      this.axios.post(url, { account, password })
         .then((res: any) => {
           const result = res.data
-          if (result.code === RES_OK) {
+          if (result.code === BaseDao.RES_OK) {
             resolve(result.data)
           } else {
             reject(result)

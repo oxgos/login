@@ -1,10 +1,12 @@
 import { GetterTree, Getter } from 'vuex'
-import { State } from './index'
+import { LoginState, TestState } from './index'
 
-const token: Getter<State, any> = (state: State) => state.login.token
+const token: Getter<LoginState, any> = (state: LoginState) => state.login.token
+const dialogs: Getter<TestState, any> = (state: TestState) => state.test.dialogs
 
-const getters: GetterTree<State, any> = {
+const getters: GetterTree<any, any> = {
   token,
+  dialogs
 }
 
 export default getters
