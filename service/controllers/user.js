@@ -32,7 +32,7 @@ module.exports = {
               userId: res.user_id,
               userName: res.user_name
             },
-            expireTime: 7 * 24 * 60 * 60
+            expireTime: +new Date() + (7 * 24 * 60 * 60)
           })
         } else {
           throw new Error('账号或者密码错误')

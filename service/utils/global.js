@@ -18,7 +18,6 @@ const getPrivateKey = function(src) {
 
 // rsa解码
 const rsaOaepDecrypt = function(key, b64) {
-  console.log('b64ToBuf(b64): ' + b64ToBuf(b64))
   let decryptedBuf = crypto.privateDecrypt(key, b64ToBuf(b64))
   return decryptedBuf.toString()
 }

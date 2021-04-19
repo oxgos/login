@@ -12,7 +12,7 @@ const failResponse = (e) => {
   return {
     code: 0,
     data: null,
-    msg: JSON.stringify(e, attrs, 2)
+    msg: JSON.stringify(e, attrs, 2) // 只显示attrs里的键的数据，并且缩进2个空格
   }
 }
 
