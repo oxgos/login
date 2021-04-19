@@ -26,7 +26,7 @@ describe('测试正常token', () => {
   })
 
   test('测试验证token的方法', () => {
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeTruthy()
   })
   
@@ -49,49 +49,49 @@ describe('测试正常token', () => {
 describe('测试非正常token', () => {
   test('没带".": 测试验证token的方法', () => {
     let egToken = '123'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('只有一个".": 测试验证token的方法', () => {
     let egToken = '1.asdf'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('有两个".": 测试验证token的方法', () => {
-    let egToken = '1.as.df'
-    const bool = JWT.vertify(egToken, { alg })
+    let egToken = 'asd.as.df'
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('有三个以上".": 测试验证token的方法', () => {
     let egToken = '1.as.d.f'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('没带"."且特殊字符: 测试验证token的方法', () => {
     let egToken = '!@^&&^&(@#'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('只有一个"."且特殊字符: 测试验证token的方法', () => {
     let egToken = '1.&^&(@#'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('有两个"."且特殊字符: 测试验证token的方法', () => {
     let egToken = '1.&^&(@.#'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
 
   test('有三个以上"."且特殊字符: 测试验证token的方法', () => {
     let egToken = '1.&^&.(@.#'
-    const bool = JWT.vertify(egToken, { alg })
+    const bool = JWT.vertify(egToken)
     expect(bool).toBeFalsy()
   })
   
