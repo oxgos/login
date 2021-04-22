@@ -14,8 +14,9 @@ const validateAuth = async (ctx, next) => {
   const reg = new RegExp(/^Bearer\s(.+)/)
   const matches = token.match(reg)
   if (matches && matches.length > 0) {
-    const isAuth = JWT.vertify(matches[1])
-    if (isAuth) {
+    const token = matches[1]
+    // token校验及token是否过期
+    if (JWT.vertify(token) && !JWT.isExpired(token)) {
       await next()
     } else {
       ctx.status = 401
