@@ -7,6 +7,8 @@ const userModel = require('../models/user')
 const JWT = require('../utils/JWT')
 const { getPrivateKey, rsaOaepDecrypt, encodePassword } = require('../utils/global')
 
+const jwtAlg = 'HS256'
+
 module.exports = {
   // 获取publicKey
   async getPublicKey(ctx, next) {
@@ -27,13 +29,24 @@ module.exports = {
         let res = findResult[0]
         const pwd = encodePassword(decrypted, res.salt)
         if (pwd === res.password) {
-          result = JWT.generate({
-            data: {
-              userId: res.user_id,
-              userName: res.user_name
-            },
-            expireTime: +new Date() + (7 * 24 * 60 * 60)
-          })
+          result = {
+            token: JWT.generate({
+              alg: jwtAlg,
+              data: {
+                userId: res.user_id,
+                userName: res.user_name
+              },
+              expireTime: 7 * 24 * 60 * 60 * 1000
+              // expireTime: 60 * 1000
+            }),
+            refreshToken: JWT.generate({
+              alg: jwtAlg,
+              data: {
+                userId: res.user_id,
+                userName: res.user_name
+              }
+            })
+          }
         } else {
           throw new Error('账号或者密码错误')
         }
@@ -73,6 +86,18 @@ module.exports = {
       result = e
     }
     ctx.__result__ = result
+    next()
+  },
+  async refreshToken(ctx, next) {
+    const { refreshToken } = ctx.request.body
+
+    const header = JWT.decodeHeader(refreshToken)
+    const payload = JWT.decodePayload(refreshToken)
+    ctx.__result__ = JWT.generate({
+      alg: header.alg,
+      data: payload.data,
+      expireTime: 60 * 1000
+    })
     next()
   },
   async logout(ctx) {

@@ -7,17 +7,22 @@ const userDao = new UserDao()
 
 // 定义state接口
 export interface loginState {
-  token: string
+  token: string | null,
+  refreshToken: string | null
 }
 
 const state: loginState = {
-  token: ''
+  token: null,
+  refreshToken: null
 }
 
 const mutations: MutationTree<loginState> = {
-  SET_TOKEN(state: loginState, payload: any) {
-    state.token = payload
-  }
+  SET_TOKEN(state: loginState, token: string) {
+    state.token = token
+  },
+  SET_REFRESH_TOKEN(state: loginState, refreshToken: string) {
+    state.refreshToken = refreshToken
+  },
 }
 
 const actions: ActionTree<loginState, any> = {
@@ -27,7 +32,8 @@ const actions: ActionTree<loginState, any> = {
       const encryptedB64: string = encodeWithRsa(password, (window as any).__publickKey__)
       userDao.signin(account, encryptedB64)
         .then((res: any) => {
-          commit('SET_TOKEN', res)
+          commit('SET_TOKEN', res.token)
+          commit('SET_REFRESH_TOKEN', res.token)
           resolve()
         })
         .catch((e: any) => {
