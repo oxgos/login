@@ -7,12 +7,7 @@ class UserDao extends BaseDao{
       const url = `/user/getPublicKey`
       this.axios.get(url)
         .then((res: any) => {
-          const result = res.data
-          if (result.code === BaseDao.RES_OK) {
-            resolve(result.data)
-          } else {
-            reject(result)
-          }
+          handleResponse(res, resolve, reject)
         })
         .catch((e: any) => {
           reject(e)
@@ -25,12 +20,7 @@ class UserDao extends BaseDao{
       const url = `/user/signUp`
       this.axios.post(url, { account, userName, password })
         .then((res: any) => {
-          const result = res.data
-          if (result.code === BaseDao.RES_OK) {
-            resolve(result.data)
-          } else {
-            reject(result)
-          }
+          handleResponse(res, resolve, reject)
         })
         .catch((e: any) => {
           reject(e)
@@ -43,12 +33,7 @@ class UserDao extends BaseDao{
       const url = `/user/signIn`
       this.axios.post(url, { account, password })
         .then((res: any) => {
-          const result = res.data
-          if (result.code === BaseDao.RES_OK) {
-            resolve(result.data)
-          } else {
-            reject(result)
-          }
+          handleResponse(res, resolve, reject)
         })
         .catch((e: any) => {
           reject(e)
@@ -61,17 +46,34 @@ class UserDao extends BaseDao{
       const url = `/user/refreshToken`
       this.axios.post(url, { token, refreshToken })
           .then((res: any) => {
-            const result = res.data
-            if (result.code === BaseDao.RES_OK) {
-              resolve(result.data)
-            } else {
-              reject(result)
-            }
+            handleResponse(res, resolve, reject)
           })
           .catch((e: any) => {
             reject(e)
           })
     })
+  }
+  // 登出
+  logout(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = `/user/logout`
+      this.axios.get(url)
+        .then((res: any) => {
+          handleResponse(res, resolve, reject)
+        })
+        .catch(e => {
+          reject(e)
+        })
+    })
+  }
+}
+
+function handleResponse(res: any, successCb: any, failCb: any): void {
+  const result = res.data
+  if (result.code === BaseDao.RES_OK) {
+    successCb(result.data)
+  } else {
+    failCb(result)
   }
 }
 

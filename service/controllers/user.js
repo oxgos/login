@@ -10,6 +10,8 @@ const { getPrivateKey, rsaOaepDecrypt, encodePassword } = require('../utils/glob
 const { Secret_Prefix } = require('../utils/constant')
 
 const jwtAlg = 'HS256'
+// token失效时间
+const tokenExpireTime = 24 * 60 * 60 * 1000
 
 module.exports = {
   // 获取publicKey
@@ -42,7 +44,7 @@ module.exports = {
           }
           // 生成token
           const token = JWT.generate(Object.assign({}, jwtOpts, {
-            expireTime: 7 * 24 * 60 * 60 * 1000
+            expireTime: tokenExpireTime
           }))
           // 生成refreshToken
           const refreshToken = JWT.generate(jwtOpts)
@@ -50,7 +52,7 @@ module.exports = {
             token,
             refreshToken
           }
-          await Store.set(`${Secret_Prefix}${token}`, secret)
+          await Store.setex(`${Secret_Prefix}${token}`, tokenExpireTime, secret)
         } else {
           throw new Error('账号或者密码错误')
         }
@@ -101,15 +103,19 @@ module.exports = {
       const payload = JWT.decodePayload(refreshToken)
       // 获取secret
       const secret = await Store.get(`${Secret_Prefix}${token}`)
-      const newToken = JWT.generate({
-        alg: header.alg,
-        data: payload.data,
-        expireTime: 7 * 24 * 60 * 60 * 1000,
-        secret
-      })
-      await Store.del(`${Secret_Prefix}${token}`)
-      await Store.set(`${Secret_Prefix}${newToken}`, secret)
-      result = newToken
+      if (secret) {
+        const newToken = JWT.generate({
+          alg: header.alg,
+          data: payload.data,
+          expireTime: tokenExpireTime,
+          secret
+        })
+        await Store.del(`${Secret_Prefix}${token}`)
+        await Store.setex(`${Secret_Prefix}${newToken}`, tokenExpireTime, secret)
+        result = newToken
+      } else {
+        throw new Error('token expired')
+      }
     } catch(e) {
       result = e
     }
@@ -117,7 +123,18 @@ module.exports = {
     next()
   },
   // 登出
-  async logout(ctx) {
-
+  async logout(ctx, next) {
+    const auth = ctx.request.header.authorization
+    const reg = new RegExp(/^Bearer\s(.+)/)
+    const matches = auth.match(reg)
+    let result
+    if (matches && matches.length > 0) {
+      const token = matches[1]
+      result = await Store.del(`${Secret_Prefix}${token}`)
+    } else {
+      result = new Error('unauth')
+    }
+    ctx.__result__ = result
+    next()
   }
 }

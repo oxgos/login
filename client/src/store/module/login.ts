@@ -55,6 +55,20 @@ const actions: ActionTree<loginState, any> = {
           reject(e)
         })
     })
+  },
+  logout({ commit }): Promise<any> {
+    return new Promise((resolve, reject) => {
+      userDao.logout()
+        .then((res: any) => {
+          commit('SET_TOKEN', null)
+          commit('SET_REFRESH_TOKEN', null)
+          resolve(res)
+        })
+        .catch((e: any) => {
+          console.log(e)
+          reject(e)
+        })
+    })
   }
 }
 
