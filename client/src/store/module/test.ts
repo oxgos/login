@@ -29,6 +29,7 @@ const actions: ActionTree<testState, any> = {
         })
         .catch((e: any) => {
           console.log(e)
+          commit('SET_DIALOGS', null)
           reject(e)
         })
     })

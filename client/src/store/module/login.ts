@@ -33,7 +33,21 @@ const actions: ActionTree<loginState, any> = {
       userDao.signin(account, encryptedB64)
         .then((res: any) => {
           commit('SET_TOKEN', res.token)
-          commit('SET_REFRESH_TOKEN', res.token)
+          commit('SET_REFRESH_TOKEN', res.refreshToken)
+          resolve()
+        })
+        .catch((e: any) => {
+          console.log(e)
+          reject(e)
+        })
+    })
+  },
+  // 刷新token
+  refreshToken({ state, commit }): Promise<void> {
+    return new Promise((resolve, reject) => {
+      userDao.refreshToken(state.token, state.refreshToken)
+        .then((token: any) => {
+          commit('SET_TOKEN', token)
           resolve()
         })
         .catch((e: any) => {

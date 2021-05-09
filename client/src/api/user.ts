@@ -55,6 +55,24 @@ class UserDao extends BaseDao{
         })
     })
   }
+  // 刷新token
+  refreshToken(token: any, refreshToken: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = `/user/refreshToken`
+      this.axios.post(url, { token, refreshToken })
+          .then((res: any) => {
+            const result = res.data
+            if (result.code === BaseDao.RES_OK) {
+              resolve(result.data)
+            } else {
+              reject(result)
+            }
+          })
+          .catch((e: any) => {
+            reject(e)
+          })
+    })
+  }
 }
 
 export default UserDao

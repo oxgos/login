@@ -1,9 +1,8 @@
 const crypto = require('crypto')
-const secret = 'my-secret'
 
 class JWT {
   // 生成token
-  static generate({ alg = 'HS256', data, expireTime } = {}) {
+  static generate({ alg = 'HS256', data, expireTime, secret } = {}) {
     let jwtHeader = {
       alg,
       typ: 'JWT'
@@ -19,12 +18,12 @@ class JWT {
     // 生成payload的base64字符串
     payload = Buffer.from(JSON.stringify(payload)).toString('base64')
     // signature
-    let signature = this.getSignature(`${jwtHeader}.${payload}`, alg)
+    let signature = this.getSignature(`${jwtHeader}.${payload}`, alg, secret)
 
     return `${jwtHeader}.${payload}.${signature}`
   }
   // 验证token
-  static vertify(token) {
+  static vertify(token, secret) {
     if (!isToken(token)) return false
     
     const header = JWT.decodeHeader(token)
@@ -32,7 +31,7 @@ class JWT {
     
     const jwtArr = token.split('.')
     const signature = jwtArr[2]
-    const compare = this.getSignature(`${jwtArr[0]}.${jwtArr[1]}`, header.alg)
+    const compare = this.getSignature(`${jwtArr[0]}.${jwtArr[1]}`, header.alg, secret)
     return signature === compare
   }
   // 是否失效
@@ -72,7 +71,7 @@ class JWT {
     }
   }
   // 获取签名
-  static getSignature(jwtStr, alg) {
+  static getSignature(jwtStr, alg, secret) {
     let { algMethod, algorithm } = this.getAlgMethod(alg)
     return crypto[algMethod](algorithm, secret).update(jwtStr).digest('base64')
   }

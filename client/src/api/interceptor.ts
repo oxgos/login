@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
-
+// 请求白名单,不需带token
 const whiteList: Array<string> = [
   '/user/getPublicKey',
   '/user/signUp',
-  '/user/signUp'
+  '/user/signIn',
+  '/user/refreshToken',
 ]
 
 const service = axios.create({
@@ -14,7 +15,7 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
   if (config.url && !whiteList.includes(config.url)) {
-    config.headers.common['Authorization'] = `Bearer ${store.getters.token}`
+    config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
   // 在发送请求之前做些什么
   return config;
@@ -28,8 +29,21 @@ service.interceptors.response.use((response) => {
   // 对响应数据做点什么
   return response;
 }, function (error) {
-  // 对响应错误做点什么
-  return Promise.reject(error);
+  const res = error.response
+  if (res.status === 401 && !res.config.__retry__) {
+    return store.dispatch('login/refreshToken')
+      .then(_ => {
+        res.config.__retry__ = true
+        return service.request(res.config)
+      })
+      .catch(e => {
+        console.log(e)
+        return Promise.reject(e)
+      })
+  } else {
+    // 对响应错误做点什么
+    return Promise.reject(error)
+  }
 })
 
 export default service
