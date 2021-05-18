@@ -13,4 +13,15 @@ module.exports = {
     ctx.__result__ = result
     next()
   },
+  async getDialogsWithCookie(ctx, next) {
+    let result
+    try {
+      result = await getAllData()
+    } catch (e) {
+      result = e
+    }
+
+    ctx.__result__ = result
+    next()
+  },
 }

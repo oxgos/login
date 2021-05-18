@@ -6,6 +6,7 @@ const routers = router
   .get('/getPublicKey', userController.getPublicKey, handleResponse)
   .post('/refreshToken', userController.refreshToken, handleResponse)
   .post('/signIn', userController.signIn, handleResponse)
+  .post('/signInWithCookie', userController.signInWithCookie, handleResponse)
   .post('/signUp', userController.signUp, handleResponse)
   .get('/logout', userController.logout, handleResponse)
  

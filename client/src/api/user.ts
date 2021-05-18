@@ -40,6 +40,19 @@ class UserDao extends BaseDao{
         })
     })
   }
+  // 登陆with cookie
+  signinWithCookie(account: string, password: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = `/user/signInWithCookie`
+      this.axios.post(url, { account, password })
+        .then((res: any) => {
+          handleResponse(res, resolve, reject)
+        })
+        .catch((e: any) => {
+          reject(e)
+        })
+    })
+  }
   // 刷新token
   refreshToken(token: any, refreshToken: any): Promise<any> {
     return new Promise((resolve, reject) => {

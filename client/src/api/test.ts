@@ -19,6 +19,23 @@ class TestDao extends BaseDao{
         })
     })
   }
+  getDialogDataWithCookie(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = `/dialog/getDialogsWithCookie`
+      this.axios.get(url)
+        .then((res: any) => {
+          const result = res.data
+          if (result.code === BaseDao.RES_OK) {
+            resolve(result.data)
+          } else {
+            reject(result)
+          }
+        })
+        .catch((e: any) => {
+          reject(e)
+        })
+    })
+  }
 }
 
 export default TestDao

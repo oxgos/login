@@ -19,10 +19,23 @@ const mutations: MutationTree<testState> = {
 }
 
 const actions: ActionTree<testState, any> = {
-  // 登陆
   getDialogs({ commit }): Promise<void> {
     return new Promise((resolve, reject) => {
       testDao.getDialogData()
+        .then((res: any) => {
+          commit('SET_DIALOGS', res)
+          resolve()
+        })
+        .catch((e: any) => {
+          console.log(e)
+          commit('SET_DIALOGS', null)
+          reject(e)
+        })
+    })
+  },
+  getDialogsWithCookie({ commit }): Promise<void> {
+    return new Promise((resolve, reject) => {
+      testDao.getDialogDataWithCookie()
         .then((res: any) => {
           commit('SET_DIALOGS', res)
           resolve()

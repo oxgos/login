@@ -11,7 +11,7 @@ const invalidResponse = () => {
 }
 
 // 验证token是否有效
-const validateAuth = async (ctx, next) => {
+const validateJWT = async (ctx, next) => {
   const auth = ctx.request.header.authorization
   const reg = new RegExp(/^Bearer\s(.+)/)
   const matches = auth.match(reg)
@@ -32,4 +32,4 @@ const validateAuth = async (ctx, next) => {
   }
 }
 
-module.exports = validateAuth
+module.exports = validateJWT

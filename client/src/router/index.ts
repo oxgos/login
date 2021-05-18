@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import SignIn from '@/views/SignIn'
 import Signup from '@/views/SignUp'
 import TestJwt from '@/views/TestJwt'
+import TestCookies from '@/views/TestCookies'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes: Array<RouteConfig> = [
     path: '/test-jwt',
     name: 'TestJwt',
     component: TestJwt
+  },
+  {
+    path: '/test-cookies',
+    name: 'TestCookies',
+    component: TestCookies
   }
 ]
 

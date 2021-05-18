@@ -42,6 +42,20 @@ const actions: ActionTree<loginState, any> = {
         })
     })
   },
+  // 登陆
+  signInWithCookie({ commit }, { account, password }): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const encryptedB64: string = encodeWithRsa(password, (window as any).__publickKey__)
+      userDao.signinWithCookie(account, encryptedB64)
+        .then((res: any) => {
+          resolve()
+        })
+        .catch((e: any) => {
+          console.log(e)
+          reject(e)
+        })
+    })
+  },
   // 刷新token
   refreshToken({ state, commit }): Promise<void> {
     return new Promise((resolve, reject) => {

@@ -5,6 +5,7 @@
       <input type="text" v-model="password" placeholder="密码" />
     </div>
     <div class="footer">
+      <button class="submit" @click="loginWithCookie">登陆cookie</button>
       <button class="submit" @click="login">登陆</button>
       <router-link to="signup">注册</router-link>
     </div>
@@ -34,12 +35,23 @@ export default class SignIn extends Vue {
 
   // 定义方法类型
   @loginModule.Action('signIn') signIn!: (arg: loginParam) => Promise<void>
+  @loginModule.Action('signInWithCookie') signInWithCookie!: (arg: loginParam) => Promise<void>
 
   async login() {
     try {
       await this.signIn({ account: this.account, password: this.password })
       console.log('登陆成功')
       this['$router'].push({ name: 'TestJwt' })
+    } catch (e) {
+      console.log('登陆失败' + e)
+    }
+  }
+
+  async loginWithCookie() {
+    try {
+      await this.signInWithCookie({ account: this.account, password: this.password })
+      console.log('登陆成功')
+      this['$router'].push({ name: 'TestCookies' })
     } catch (e) {
       console.log('登陆失败' + e)
     }

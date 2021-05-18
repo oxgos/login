@@ -20,6 +20,37 @@ module.exports = {
     ctx.__result__ = pub.split('\n').join('')
     next()
   },
+  // 登陆cookie校验
+  async signInWithCookie(ctx, next) {
+    const { account, password } = ctx.request.body
+    let result
+    try {
+      // 判断是否有这个账号
+      const findResult = await userModel.findDataByAccount(account)
+      if (Array.isArray(findResult) && findResult.length > 0) {
+        // 解码密码
+        const decrypted = rsaOaepDecrypt(getPrivateKey(), password)
+        const { password: sqlPwd, salt, user_id: userId, user_name: userName } = findResult[0]
+        const pwd = encodePassword(decrypted, salt)
+        if (pwd === sqlPwd) {
+          let logged = ctx.session.userinfo || false
+          if (!logged) {
+            ctx.session.userinfo = userName
+          }
+          console.log('ctx.session.userinfo :' + ctx.session.userinfo)
+          result = 'ok'
+        } else { 
+          throw new Error('账号或者密码错误')
+        }
+      } else {
+        throw new Error('账号或者密码错误')
+      }
+    } catch(e) {
+      result = e
+    }
+    ctx.__result__ = result
+    next()
+  },
   // 登陆
   async signIn(ctx, next) {
     const { account, password } = ctx.request.body
@@ -52,6 +83,7 @@ module.exports = {
             token,
             refreshToken
           }
+          // redis存储secret
           await Store.setex(`${Secret_Prefix}${token}`, tokenExpireTime, secret)
         } else {
           throw new Error('账号或者密码错误')

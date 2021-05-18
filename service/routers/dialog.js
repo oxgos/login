@@ -1,10 +1,12 @@
 const router = require('koa-router')()
 const dialogController = require('../controllers/dialog')
-const validateAuth = require('../middleware/validateAuth')
+const validateJWT = require('../middleware/validateJWT')
+const validateCookie = require('../middleware/validateCookie')
 const handleResponse = require('../middleware/handleResponse')
 
 const routers = router
-  .get('/getDialogs', validateAuth, dialogController.getDialogs, handleResponse)
+  .get('/getDialogs', validateJWT, dialogController.getDialogs, handleResponse)
+  .get('/getDialogsWithCookie', validateCookie, dialogController.getDialogsWithCookie, handleResponse)
  
   
 module.exports = routers
