@@ -6,6 +6,10 @@ const whiteList: Array<string> = [
   '/user/signUp',
   '/user/signIn',
   '/user/refreshToken',
+  '/user/logout',
+  '/user/signInWithCookie',
+  '/user/logoutWithCookie',
+  '/dialog/getDialogsWithCookie'
 ]
 
 const service = axios.create({

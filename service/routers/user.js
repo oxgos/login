@@ -9,6 +9,7 @@ const routers = router
   .post('/signInWithCookie', userController.signInWithCookie, handleResponse)
   .post('/signUp', userController.signUp, handleResponse)
   .get('/logout', userController.logout, handleResponse)
+  .get('/logoutWithCookie', userController.logoutWithCookie, handleResponse)
  
   
 module.exports = routers

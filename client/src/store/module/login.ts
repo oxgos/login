@@ -83,6 +83,18 @@ const actions: ActionTree<loginState, any> = {
           reject(e)
         })
     })
+  },
+  logoutWithCookie({ commit }): Promise<any> {
+    return new Promise((resolve, reject) => {
+      userDao.logoutWithCookie()
+        .then((res: any) => {
+          resolve(res)
+        })
+        .catch((e: any) => {
+          console.log(e)
+          reject(e)
+        })
+    })
   }
 }
 

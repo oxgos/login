@@ -79,6 +79,19 @@ class UserDao extends BaseDao{
         })
     })
   }
+  // 登出with cookie
+  logoutWithCookie(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const url = `/user/logoutWithCookie`
+      this.axios.get(url)
+        .then((res: any) => {
+          handleResponse(res, resolve, reject)
+        })
+        .catch(e => {
+          reject(e)
+        })
+    })
+  }
 }
 
 function handleResponse(res: any, successCb: any, failCb: any): void {

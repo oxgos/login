@@ -11,7 +11,7 @@ module.exports = {
     }
 
     ctx.__result__ = result
-    next()
+    await next()
   },
   async getDialogsWithCookie(ctx, next) {
     let result
@@ -22,6 +22,6 @@ module.exports = {
     }
 
     ctx.__result__ = result
-    next()
+    await next()
   },
 }

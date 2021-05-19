@@ -18,7 +18,7 @@ module.exports = {
   async getPublicKey(ctx, next) {
     const pub = fs.readFileSync(path.resolve(__dirname, '..', 'assets/rsa/rsa_1024_pub.pem'), 'utf8')
     ctx.__result__ = pub.split('\n').join('')
-    next()
+    await next()
   },
   // 登陆cookie校验
   async signInWithCookie(ctx, next) {
@@ -49,7 +49,7 @@ module.exports = {
       result = e
     }
     ctx.__result__ = result
-    next()
+    await next()
   },
   // 登陆
   async signIn(ctx, next) {
@@ -95,7 +95,7 @@ module.exports = {
       result = e
     }
     ctx.__result__ = result
-    next()
+    await next()
   },
   // 注册
   async signUp(ctx, next) {
@@ -124,7 +124,7 @@ module.exports = {
       result = e
     }
     ctx.__result__ = result
-    next()
+    await next()
   },
   // 刷新token
   async refreshToken(ctx, next) {
@@ -152,7 +152,7 @@ module.exports = {
       result = e
     }
     ctx.__result__ = result
-    next()
+    await next()
   },
   // 登出
   async logout(ctx, next) {
@@ -167,6 +167,13 @@ module.exports = {
       result = new Error('unauth')
     }
     ctx.__result__ = result
-    next()
+    await next()
+  },
+  // 登出with cookie
+  async logoutWithCookie(ctx, next) {
+    // 将登录信息清空
+    ctx.session = null
+    ctx.__result__ = 'logout'
+    await next()
   }
 }

@@ -20,7 +20,7 @@ export default class TestJwt extends Vue {
   @Getter('dialogs') dialogs: any
   // 定义方法类型
   @testModule.Action('getDialogsWithCookie') getDialogsWithCookie!: () => Promise<void>
-  @loginModule.Action('logout') logout!: () => Promise<any>
+  @loginModule.Action('logoutWithCookie') logoutWithCookie!: () => Promise<any>
 
   public async getData() {
     try {
@@ -33,7 +33,7 @@ export default class TestJwt extends Vue {
 
   public async logoutAccount() {
     try {
-      const ret = await this.logout()
+      const ret = await this.logoutWithCookie()
       this['$router'].push({ name: 'SignIn' })
     } catch(e) {
       console.log(e)
